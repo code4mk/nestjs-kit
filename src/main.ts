@@ -1,6 +1,6 @@
 import { NestFactory } from '@nestjs/core';
+import { CentralExceptionFilter } from '@kitApp/exceptions/central.exception.filter';
 import { AppModule } from './core/app.module';
-import { CentralExceptionFilter } from './core/central.exception.filter';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
