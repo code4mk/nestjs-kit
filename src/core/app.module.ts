@@ -1,5 +1,6 @@
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { UserModule } from 'src/modules/user/user.module';
+import { AuthorizationMiddleware } from '@kitApp/middleware/authorization.middleware';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 
@@ -8,4 +9,11 @@ import { AppService } from './app.service';
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {}
+
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer
+      .apply(AuthorizationMiddleware)
+      .forRoutes('*');
+  }
+}
