@@ -10,7 +10,7 @@ import { Request, Response, NextFunction } from 'express';
 @Injectable()
 export class AuthorizationMiddleware implements NestMiddleware {
   use(req: Request, res: Response, next: NextFunction) {
-    if (!req.headers.authorization) {
+    if (!req.headers.authorization && process.env.IS_AUTHORIZATION === 'true') {
       throw new UnauthorizedException();
     }
     next();
