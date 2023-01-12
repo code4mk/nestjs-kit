@@ -2,22 +2,32 @@ import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { UserModule } from 'src/modules/user/user.module';
 import { AuthorizationMiddleware } from '@kitApp/middleware/authorization.middleware';
 import { ConfigModule } from '@nestjs/config';
+import { ScheduleModule } from '@nestjs/schedule';
+import EmailScheduleService from '@kitApp/schedule/email.schedule.service';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 
 @Module({
   imports: [
-    // modules
+    // Add all modules.
     UserModule,
 
-    // config
+    // Add config module.
     ConfigModule.forRoot({
       isGlobal: true,
       envFilePath: ['.env'],
     }),
+
+    // Add schedule module.
+    ScheduleModule.forRoot(),
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    AppService,
+
+    // schedule service.
+    EmailScheduleService,
+  ],
 })
 
 export class AppModule implements NestModule {
