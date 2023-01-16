@@ -14,7 +14,7 @@ export default function database() : any {
       entities: ['dist/**/*.entity{.ts,.js}'],
       cli: {
         entitiesDir: 'src/**/*entity{.ts,.js}',
-        migrationsDir: 'src/migration',
+        migrationsDir: 'src/db/migrations',
       },
       synchronize: false,
     }),
