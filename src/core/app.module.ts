@@ -4,6 +4,10 @@ import { AuthorizationMiddleware } from '@kitApp/middleware/authorization.middle
 import { ConfigModule } from '@nestjs/config';
 import { ScheduleModule } from '@nestjs/schedule';
 import EmailScheduleService from '@kitApp/schedule/email.schedule.service';
+import databaseConfig from '@kitConfig/database.config';
+import { database } from '@kitSetup/index';
+import { DataSource } from 'typeorm';
+import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 
@@ -16,8 +20,10 @@ import { AppService } from './app.service';
     ConfigModule.forRoot({
       isGlobal: true,
       envFilePath: ['.env'],
+      load: [databaseConfig],
     }),
-
+    // Add database.
+    database(),
     // Add schedule module.
     ScheduleModule.forRoot(),
   ],
@@ -31,6 +37,8 @@ import { AppService } from './app.service';
 })
 
 export class AppModule implements NestModule {
+  constructor(private dataSource: DataSource) {}
+
   configure(consumer: MiddlewareConsumer) {
     consumer
       .apply(AuthorizationMiddleware)
