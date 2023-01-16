@@ -5,6 +5,11 @@ import {
 import { InjectRepository } from '@nestjs/typeorm';
 import { randomInt } from 'crypto';
 import { Repository } from 'typeorm';
+import {
+  paginate,
+  Pagination,
+  IPaginationOptions,
+} from 'nestjs-typeorm-paginate';
 import { User } from './user.entity';
 
 @Injectable()
@@ -29,9 +34,11 @@ export class UserService {
     }
 
     try {
-      let a = await this.usersRepository.find();
-      console.log(a);
-      return a;
+      let qb: any = this.usersRepository
+        .createQueryBuilder('user')
+        .select(['user.id', 'user.firstName']);
+
+      return paginate<User>(qb, { page: 1, limit: 5, route: 'abc.com/a' });
     } catch (error) {
       let data: any = error;
       throw new BadRequestException({ data });
