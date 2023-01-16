@@ -9,7 +9,6 @@ declare let process : {
 dotenv.config();
 
 export const dataSource = new DataSource({
-  migrationsTableName: 'migrations',
   type: process.env.DB_TYPE || '',
   host: process.env.DB_HOST || '',
   port: process.env.DB_PORT || 5432,
@@ -18,6 +17,7 @@ export const dataSource = new DataSource({
   database: process.env.DB_DATABASE || '',
   synchronize: false,
   logging: false,
+  migrationsTableName: 'nestjs_kit_migrations',
   entities: ['src/**/*.entity.ts'],
   migrations: ['src/db/migrations/*.ts'],
 });

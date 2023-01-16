@@ -7,7 +7,6 @@ import EmailScheduleService from '@kitApp/schedule/email.schedule.service';
 import databaseConfig from '@kitConfig/database.config';
 import { database } from '@kitSetup/index';
 import { DataSource } from 'typeorm';
-import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 
