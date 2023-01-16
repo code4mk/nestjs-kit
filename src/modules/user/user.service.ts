@@ -1,4 +1,7 @@
-import { Injectable, NotFoundException, UnprocessableEntityException } from '@nestjs/common';
+import {
+  BadRequestException,
+  HttpException, Injectable, NotFoundException, UnprocessableEntityException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { randomInt } from 'crypto';
 import { Repository } from 'typeorm';
@@ -19,17 +22,19 @@ export class UserService {
         .values([
           { firstName: 'kamal', lastName: 'mostafa' },
         ])
-        .returning('id')
         .execute();
     } catch (error) {
-      return error;
+      let data: any = error;
+      throw new BadRequestException({ data });
     }
 
     try {
       let a = await this.usersRepository.find();
+      console.log(a);
       return a;
     } catch (error) {
-      return error;
+      let data: any = error;
+      throw new BadRequestException({ data });
     }
   }
 }
