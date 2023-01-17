@@ -22,6 +22,7 @@ export class UserService {
   async getUsers(req: Request) {
     let perPage: any = req.query?.per_page || 5;
     let thePage: any = req.query?.page || 1;
+    let theRoute: any = `${req.headers.host}${req.path}`;
 
     try {
       await this.usersRepository
@@ -42,7 +43,7 @@ export class UserService {
         .createQueryBuilder('user')
         .select(['user.id', 'user.firstName']);
 
-      return paginate<User>(qb, { page: thePage, limit: perPage, route: 'abc.com/a' });
+      return paginate<User>(qb, { page: thePage, limit: perPage, route: theRoute });
     } catch (error) {
       let data: any = error;
       throw new BadRequestException({ data });
