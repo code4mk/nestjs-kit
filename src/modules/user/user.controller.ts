@@ -11,7 +11,7 @@ export class UserController {
   @Get()
   async getHello(@Req() req: Request, @Res() res: Response) {
     try {
-      let user: any = await this.userService.getHello();
+      let user: any = await this.userService.getUsers(req);
       res.status(200).json(user);
     } catch (error) {
       throw new HttpException('error', 404);
