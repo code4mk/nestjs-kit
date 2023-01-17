@@ -19,7 +19,9 @@
     "noFallthroughCasesInSwitch": false,
     "paths": {
       "@kitApp/*": ["./src/app/*"],
-      "@kitModules/*": ["./src/modules/*"]
+      "@kitModules/*": ["./src/modules/*"],
+      "@kitConfig/*": ["./src/config/*"],
+      "@kitSetup/*": ["./src/setup/*"]
     }
   }
 }

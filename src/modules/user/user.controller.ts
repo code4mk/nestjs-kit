@@ -1,5 +1,5 @@
 import {
-  Controller, Get, HttpStatus, BadRequestException, UnprocessableEntityException, Req, Res,
+  Controller, Get, HttpStatus, BadRequestException, UnprocessableEntityException, Req, Res, HttpException,
 } from '@nestjs/common';
 import { Request, Response } from 'express';
 import { UserService } from './user.service';
@@ -9,12 +9,12 @@ export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Get()
-  getHello(@Req() req: Request, @Res() res: Response) {
+  async getHello(@Req() req: Request, @Res() res: Response) {
     try {
-      let user: any = this.userService.getHello();
+      let user: any = await this.userService.getUsers(req);
       res.status(200).json(user);
     } catch (error) {
-      throw new UnprocessableEntityException(error.response);
+      throw new HttpException('error', 404);
     }
   }
 }
