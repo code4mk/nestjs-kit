@@ -17,7 +17,7 @@ export class UserService {
   async getUsers(req: Request) {
     let perPage: any = req.query?.perPage || req.query?.limit || 5;
     let thePage: any = req.query?.page || 1;
-    let theRoute: any = `${req.protocol}://${req.headers.host}${req.path}`;
+    let theRoute: any = `${req.protocol}://${req.get('host')}${req.path}`;
 
     try {
       await this.usersRepository
