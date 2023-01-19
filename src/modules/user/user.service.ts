@@ -1,6 +1,8 @@
 import {
   BadRequestException,
+  Body,
   Injectable,
+  Query,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -42,6 +44,23 @@ export class UserService {
     } catch (error) {
       let data: any = error;
       throw new BadRequestException({ data });
+    }
+  }
+
+  async addUser(createUserDto: any) {
+    let { firstName, lastName } = createUserDto;
+    try {
+      await this.usersRepository
+        .createQueryBuilder()
+        .insert()
+        .into(User)
+        .values([
+          { firstName, lastName },
+        ])
+        .execute();
+      return ('user is created');
+    } catch (error) {
+      return error;
     }
   }
 }
