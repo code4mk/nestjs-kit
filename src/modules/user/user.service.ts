@@ -1,15 +1,12 @@
 import {
   BadRequestException,
-  HttpException, Injectable, NotFoundException, UnprocessableEntityException,
+  Body,
+  Injectable,
+  Query,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { randomInt } from 'crypto';
 import { Repository } from 'typeorm';
-import {
-  paginate,
-  Pagination,
-  IPaginationOptions,
-} from 'nestjs-typeorm-paginate';
+import { paginate } from 'nestjs-typeorm-paginate';
 import { Request } from 'express';
 import { User } from './user.entity';
 
@@ -20,8 +17,9 @@ export class UserService {
   ) { }
 
   async getUsers(req: Request) {
-    let perPage: any = req.query?.per_page || 5;
+    let perPage: any = req.query?.perPage || req.query?.limit || 5;
     let thePage: any = req.query?.page || 1;
+    let theRoute: any = `${req.protocol}://${req.get('host')}${req.path}`;
 
     try {
       await this.usersRepository
@@ -42,10 +40,27 @@ export class UserService {
         .createQueryBuilder('user')
         .select(['user.id', 'user.firstName']);
 
-      return paginate<User>(qb, { page: thePage, limit: perPage, route: 'abc.com/a' });
+      return paginate<User>(qb, { page: thePage, limit: perPage, route: theRoute });
     } catch (error) {
       let data: any = error;
       throw new BadRequestException({ data });
+    }
+  }
+
+  async addUser(createUserDto: any) {
+    let { firstName, lastName } = createUserDto;
+    try {
+      await this.usersRepository
+        .createQueryBuilder()
+        .insert()
+        .into(User)
+        .values([
+          { firstName, lastName },
+        ])
+        .execute();
+      return ('user is created');
+    } catch (error) {
+      return error;
     }
   }
 }
