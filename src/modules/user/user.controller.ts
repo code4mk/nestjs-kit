@@ -30,4 +30,10 @@ export class UserController {
       throw new HttpException('error', 404);
     }
   }
+
+  @Get('/order')
+  async order(@Req() req: Request, @Res() res: Response) {
+    let a: any = await this.userService.order();
+    res.json('order event listener');
+  }
 }

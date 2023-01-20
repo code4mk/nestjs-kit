@@ -31,6 +31,7 @@ module.exports = {
     'no-unreachable': 0,
     'consistent-return': 0,
     'no-shadow': 0,
+    'lines-between-class-members': 0,
 
     // eslint-config-import rules.
     'import/prefer-default-export': 0,
