@@ -8,12 +8,15 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { paginate } from 'nestjs-typeorm-paginate';
 import { Request } from 'express';
+import { EventEmitter2 } from '@nestjs/event-emitter';
+import { OrderCreateEvent } from '@kitApp/events/order-create.event';
 import { User } from './user.entity';
 
 @Injectable()
 export class UserService {
   constructor(
     @InjectRepository(User) private usersRepository: Repository<User>,
+    private eventEmitter: EventEmitter2,
   ) { }
 
   async getUsers(req: Request) {
@@ -62,5 +65,13 @@ export class UserService {
     } catch (error) {
       return error;
     }
+  }
+
+  async order() {
+    // event listener example.
+    let orderCreateEvent = new OrderCreateEvent();
+    orderCreateEvent.payload = { name: 'kamal', age: 26, phone: 212121 };
+    this.eventEmitter.emit('order', orderCreateEvent);
+    return 'test';
   }
 }

@@ -7,6 +7,7 @@ import EmailScheduleService from '@kitApp/schedule/email.schedule.service';
 import databaseConfig from '@kitConfig/database.config';
 import { database } from '@kitSetup/index';
 import { DataSource } from 'typeorm';
+import { EventEmitterModule } from '@nestjs/event-emitter';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 
@@ -25,6 +26,8 @@ import { AppService } from './app.service';
     database(),
     // Add schedule module.
     ScheduleModule.forRoot(),
+    // Add event module
+    EventEmitterModule.forRoot(),
   ],
   controllers: [AppController],
   providers: [
