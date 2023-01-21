@@ -21,7 +21,7 @@ export class CentralExceptionFilter implements ExceptionFilter {
 
     let theResponse: any = exception.getResponse();
     let responseData: any = {
-      ...theResponse,
+      theResponse,
       path: request.url,
     };
     response.status(status).json(responseData);
