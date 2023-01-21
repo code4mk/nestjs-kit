@@ -5,9 +5,11 @@ import { ConfigModule } from '@nestjs/config';
 import { ScheduleModule } from '@nestjs/schedule';
 import EmailScheduleService from '@kitApp/schedule/email.schedule.service';
 import databaseConfig from '@kitConfig/database.config';
-import { database } from '@kitSetup/index';
+import { database, bull, KitThrottlerModule } from '@kitSetup/index';
 import { DataSource } from 'typeorm';
 import { EventEmitterModule } from '@nestjs/event-emitter';
+import { APP_GUARD } from '@nestjs/core';
+import { ThrottlerGuard } from '@nestjs/throttler';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 
@@ -24,6 +26,10 @@ import { AppService } from './app.service';
     }),
     // Add database.
     database(),
+    // Add bull
+    bull(),
+    // add throttle | rate limit
+    KitThrottlerModule,
     // Add schedule module.
     ScheduleModule.forRoot(),
     // Add event module
