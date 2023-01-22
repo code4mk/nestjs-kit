@@ -1,3 +1,4 @@
+import { MailerService } from '@nestjs-modules/mailer';
 import {
   Controller, Get, Post, Req, Res, HttpException, Body, Query,
 } from '@nestjs/common';
@@ -8,7 +9,10 @@ import { UserService } from './user.service';
 
 @Controller('/user')
 export class UserController {
-  constructor(private readonly userService: UserService) {}
+  constructor(
+    private readonly userService: UserService,
+    private readonly mailerService: MailerService,
+  ) { }
 
   @Get()
   async getUsers(@Req() req: Request, @Res() res: Response) {
@@ -35,5 +39,23 @@ export class UserController {
   async order(@Req() req: Request, @Res() res: Response) {
     let a: any = await this.userService.order();
     res.json('order event listener');
+  }
+
+  @Get('/mail')
+  async mail() {
+    this.mailerService
+      .sendMail({
+        to: 'test@nestjs.com', // list of receivers
+        from: 'noreply@nestjs.com', // sender address
+        subject: 'Testing Nest MailerModule ✔', // Subject line
+        context: {
+          name: 'nestjskit',
+        },
+        // html: '<b>welcome</b>', // HTML body content
+        template: 'email',
+      })
+      .then((r) => { console.log(r); })
+      .catch((e) => { console.log(e); });
+    return 'sent';
   }
 }
