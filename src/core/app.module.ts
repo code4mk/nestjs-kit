@@ -5,11 +5,16 @@ import { ConfigModule } from '@nestjs/config';
 import { ScheduleModule } from '@nestjs/schedule';
 import EmailScheduleService from '@kitApp/schedule/email.schedule.service';
 import databaseConfig from '@kitConfig/database.config';
-import { database, bull, KitThrottlerModule } from '@kitSetup/index';
+import {
+  database, bull, KitThrottlerModule, MailSetupModule,
+} from '@kitSetup/index';
 import { DataSource } from 'typeorm';
 import { EventEmitterModule } from '@nestjs/event-emitter';
 import { APP_GUARD } from '@nestjs/core';
 import { ThrottlerGuard } from '@nestjs/throttler';
+import { MailerModule } from '@nestjs-modules/mailer';
+import * as path from 'path';
+import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handlebars.adapter';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 
@@ -26,6 +31,8 @@ import { AppService } from './app.service';
     }),
     // Add database.
     database(),
+    // mail
+    MailSetupModule,
     // Add bull
     bull(),
     // add throttle | rate limit
@@ -34,6 +41,7 @@ import { AppService } from './app.service';
     ScheduleModule.forRoot(),
     // Add event module
     EventEmitterModule.forRoot(),
+
   ],
   controllers: [AppController],
   providers: [
